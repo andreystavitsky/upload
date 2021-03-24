@@ -57,7 +57,7 @@ export default class UploadPage extends ExtensionPage {
         ];
 
         // the checkboxes we need to watch and to save.
-        this.checkboxes = ['mustResize', 'addsWatermarks', 'disableHotlinkProtection', 'disableDownloadLogging', 'awsS3UsePathStyleEndpoint'];
+        this.checkboxes = ['mustResize', 'addsWatermarks', 'disableHotlinkProtection', 'disableDownloadLogging', 'awsS3UsePathStyleEndpoint', 'mustEncode'];
 
         // fields that are objects
         this.objects = ['mimeTypes'];
@@ -243,6 +243,18 @@ export default class UploadPage extends ExtensionPage {
                                     type: 'number',
                                     min: '0',
                                 }),
+                            ]),
+                            m('fieldset', [
+                                m('legend', app.translator.trans('fof-upload.admin.labels.encode.title')),
+                                m('.helpText', app.translator.trans('fof-upload.admin.help_texts.encode')),
+                                Switch.component(
+                                    {
+                                        state: this.values.mustEncode() || false,
+                                        onchange: this.values.mustEncode,
+                                    },
+                                    app.translator.trans('fof-upload.admin.labels.encode.toggle')
+                                ),
+                                //ToDo encoding format selector
                             ]),
                             m('fieldset', [
                                 m('legend', app.translator.trans('fof-upload.admin.labels.client_extension.title')),

@@ -16,6 +16,8 @@ fof-upload:
         Please configure your mapping here. Each mime type regular expression will be handled by a specific upload adapter and download template.
       resize: |
         Choose whether you want to resize your images before they get uploaded. You can choose a maximum width and height, in pixels. The resizing process keeps the aspect ratio of the images.
+      encode: |
+        Force encoding image to specified format.
       client_extension: |
         By default Upload will choose a safe file extension based on the MIME type.
         For some file types based around ZIP or binary data this can result in generic extensions being used instead of the expected one.
@@ -64,6 +66,9 @@ fof-upload:
         max_width: Maximum image width/height
         title: Image resize
         toggle: Resize images
+      encode:
+        title: Image encode
+        toggle: Encode images
       client_extension:
         title: User-provided file extensions
       watermark:

@@ -51,12 +51,15 @@ class ImageProcessor implements Processable
      */
     public function process(File $file, UploadedFile $upload, string $mimeType)
     {
-        if ($mimeType == 'image/jpeg' || $mimeType == 'image/png') {
+        if ($mimeType == 'image/jpeg' || $mimeType == 'image/png' || $mimeType == 'image/webp') {
             try {
                 $image = (new ImageManager())->make($upload->getRealPath());
             } catch (NotReadableException $e) {
                 throw new ValidationException(['upload' => 'Corrupted image']);
             }
+
+            $encodeFormat = $mimeType;
+            $encodeQuality = 90;
 
             if ($this->settings->get('fof-upload.mustResize')) {
                 $this->resize($image);
@@ -66,11 +69,16 @@ class ImageProcessor implements Processable
                 $this->watermark($image);
             }
 
+            if ($this->settings->get('fof-upload.mustEncode')) {
+                //ToDo extension selector
+                $encodeFormat = 'webp';
+            }
+
             $image->orientate();
 
             @file_put_contents(
                 $upload->getRealPath(),
-                $image->encode($mimeType)
+                $image->encode($encodeFormat, $encodeQuality)
             );
         }
     }

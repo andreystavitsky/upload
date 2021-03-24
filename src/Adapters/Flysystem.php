@@ -18,6 +18,7 @@ use FoF\Upload\File;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Flarum\Settings\SettingsRepositoryInterface;
 
 abstract class Flysystem implements UploadAdapter
 {
@@ -80,12 +81,24 @@ abstract class Flysystem implements UploadAdapter
     {
         $today = (new Carbon());
 
+        /** @var SettingsRepositoryInterface $settings */
+        $settings = app(SettingsRepositoryInterface::class);
+
         $file->path = sprintf(
             '%s%s%s',
             $today->toDateString(),
             $this instanceof Local ? DIRECTORY_SEPARATOR : '/',
             $today->timestamp.'-'.$today->micro.'-'.$file->base_name
         );
+
+        if ($settings->get('fof-upload.mustEncode')) {
+            $extension = pathinfo($file->base_name, PATHINFO_EXTENSION);
+
+            //ToDo extension selector
+            if (in_array($extension, ['png', 'jpg', 'jpeg']))
+                $file->path .= '.webp';
+        }
+
     }
 
     abstract protected function generateUrl(File $file);
