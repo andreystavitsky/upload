@@ -30,6 +30,8 @@ fof-upload:
         The ACL that should be applied to the uploaded object (default: private). For possible values, see https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl
       composer_buttons: |
         By default both the media manager button and upload button are visible. You can also choose to display only one button.
+      encode_buttons: |
+        Select image format to encode uploaded images.
     labels:
       aws-s3:
         bucket: Bucket
@@ -69,6 +71,7 @@ fof-upload:
       encode:
         title: Image encode
         toggle: Encode images
+        quality: Encode quality
       client_extension:
         title: User-provided file extensions
       watermark:
@@ -82,6 +85,11 @@ fof-upload:
           both: Both
           upload-btn: Upload button only
           media-btn: Media manager button only
+      encode_buttons:
+        title: Encode image format
+        options:
+          jpg: jpg
+          webp: webp
       gcs:
         project_id: Project ID
         bucket: Bucket

@@ -94,9 +94,8 @@ abstract class Flysystem implements UploadAdapter
         if ($settings->get('fof-upload.mustEncode')) {
             $extension = pathinfo($file->base_name, PATHINFO_EXTENSION);
 
-            //ToDo extension selector
-            if (in_array($extension, ['png', 'jpg', 'jpeg']))
-                $file->path .= '.webp';
+            if (in_array($extension, ['png', 'jpg', 'jpeg', 'webp']))
+                $file->path .= '.'.$settings->get('fof-upload.encodeImageType');
         }
 
     }

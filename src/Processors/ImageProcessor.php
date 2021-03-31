@@ -70,8 +70,8 @@ class ImageProcessor implements Processable
             }
 
             if ($this->settings->get('fof-upload.mustEncode')) {
-                //ToDo extension selector
-                $encodeFormat = 'webp';
+                $encodeFormat = $this->settings->get('fof-upload.encodeImageType');
+                $encodeQuality = $this->settings->get('fof-upload.encodeQuality');
             }
 
             $image->orientate();

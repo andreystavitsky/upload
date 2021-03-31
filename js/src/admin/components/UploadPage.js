@@ -26,6 +26,8 @@ export default class UploadPage extends ExtensionPage {
             'maxFileSize',
             'whitelistedClientExtensions',
             'composerButtonVisiblity',
+            'encodeImageType',
+            'encodeQuality',
             // watermark
             'watermark',
             'watermarkPosition',
@@ -80,6 +82,12 @@ export default class UploadPage extends ExtensionPage {
             both: app.translator.trans('fof-upload.admin.labels.composer_buttons.options.both'),
             'upload-btn': app.translator.trans('fof-upload.admin.labels.composer_buttons.options.upload-btn'),
             'media-btn': app.translator.trans('fof-upload.admin.labels.composer_buttons.options.media-btn'),
+        };
+
+        // Encode button options
+        this.encodeTypeOptions = {
+            jpg: app.translator.trans('fof-upload.admin.labels.encode_buttons.options.jpg'),
+            'webp': app.translator.trans('fof-upload.admin.labels.encode_buttons.options.webp'),
         };
 
         // get the saved settings from the database
@@ -244,7 +252,7 @@ export default class UploadPage extends ExtensionPage {
                                     min: '0',
                                 }),
                             ]),
-                            m('fieldset', [
+                            m('fieldset.encodeButtons', [
                                 m('legend', app.translator.trans('fof-upload.admin.labels.encode.title')),
                                 m('.helpText', app.translator.trans('fof-upload.admin.help_texts.encode')),
                                 Switch.component(
@@ -254,7 +262,25 @@ export default class UploadPage extends ExtensionPage {
                                     },
                                     app.translator.trans('fof-upload.admin.labels.encode.toggle')
                                 ),
-                                //ToDo encoding format selector
+                                m('legend', app.translator.trans('fof-upload.admin.labels.encode_buttons.title')),
+                                m('.helpText', app.translator.trans('fof-upload.admin.help_texts.encode_buttons')),
+                                m('div', [
+                                    Select.component({
+                                        options: this.encodeTypeOptions,
+                                        onchange: this.values.encodeImageType,
+                                        value: this.values.encodeImageType() || 'jpg',
+                                    }),
+                                ]),
+                                m('label', app.translator.trans('fof-upload.admin.labels.encode.quality')),
+                                m('input', {
+                                    className: 'FormControl',
+                                    value: this.values.encodeQuality() || 90,
+                                    oninput: withAttr('value', this.values.encodeQuality),
+                                    disabled: !this.values.mustEncode(),
+                                    type: 'number',
+                                    min: '0',
+                                    max: '100'
+                                }),
                             ]),
                             m('fieldset', [
                                 m('legend', app.translator.trans('fof-upload.admin.labels.client_extension.title')),
